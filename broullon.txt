@@ -1,0 +1,26 @@
+curl -X POST -H "Authorization: Bearer ya29.a0ARrdaM98tN_i-tFTZjF0FxNlBvf6wdyF_01Kn8HlNOUUa2S1eB41VoWzxizI06ZbA44s5XEFFvICc36aHckiQWpIQHIeKrKUzHDRtHUky0jrBwsj6rV5QGli_xOofJwShv8QsS_8V2u-7ltEXC9jaEC4nT-l" -H "Content-Type: application/json" -d '{
+  "message":{
+    "token":"key=AAAAUlPxmMU:APA91bEQSqqxw-y9Q3J__3hEgPFct5-1zBRW2YEhTXiWbjoKJcUU7uHf_-Go0r1ECgZUheydpF7blcY39FanwMqMYeoINJ42Zhb9vma7KmW6kO25loRH0k9O4vkv9_xoWGDWpAarTgyw",
+    "notification":{
+      "title":"Hello",
+      "body":"This is a text message!"
+    }
+  }
+}' https://fcm.googleapis.com/v1/projects/notification-7e2dd/messages:send
+
+
+curl -X POST -H "Authorization: Bearer ya29.a0ARrdaM98tN_i-tFTZjF0FxNlBvf6wdyF_01Kn8HlNOUUa2S1eB41VoWzxizI06ZbA44s5XEFFvICc36aHckiQWpIQHIeKrKUzHDRtHUky0jrBwsj6rV5QGli_xOofJwShv8QsS_8V2u-7ltEXC9jaEC4nT-l" -H "Content-Type: application/json" -d '{
+  "message": {
+    "topic" : "foo-bar",
+    "notification": {
+      "body": "This is a Firebase Cloud Messaging Topic Message!",
+      "title": "FCM Message"
+    }
+  }
+}' https://fcm.googleapis.com/v1/projects/notification-7e2dd/messages:send
+
+
+
+
+GOOGLE_APPLICATION_CREDENTIALS="C:\Users\damaro\firebase\notification-7e2dd-firebase-adminsdk-ks8wd-0a25fd5ee7.json"
+C:/Users/damaro/notification/android/app/google-services.json
