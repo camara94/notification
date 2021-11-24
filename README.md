@@ -1,5 +1,6 @@
 # notification
-
+Dans ce tuto, nous allons illustrer l'utilisation de la notification flutter avec firebase
+de google
 
 ## Lien pour la génération de token de cloud messaging
 
