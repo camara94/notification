@@ -8,12 +8,41 @@
  */
  const https = require('https');
  const { google } = require('googleapis');
+ const functions = require('firebase-functions');
+ const admin = require('firebase-admin');
  
  const PROJECT_ID = 'notification-7e2dd';
  const HOST = 'fcm.googleapis.com';
  const PATH = '/v1/projects/' + PROJECT_ID + '/messages:send';
  const MESSAGING_SCOPE = 'https://www.googleapis.com/auth/firebase.messaging';
  const SCOPES = [MESSAGING_SCOPE];
+
+ admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://notification-7e2dd-default-rtdb.firebaseio.com'
+});
+
+exports.addMessage = functions.https.onRequest((req, res) => {
+  // Grab the text parameter.
+  const original = req.query.text;
+  // Push it into the Realtime Database then send a response
+  admin.database().ref('/messages').push({ original: original }).then(snapshot => {
+      // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
+      res.redirect(303, snapshot.ref);
+  });
+});
+
+exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
+    .onCreate((snapshot, context) => {
+      // Grab the current value of what was written to the Realtime Database.
+      const original = snapshot.val();
+      functions.logger.log('Uppercasing', context.params.pushId, original);
+      const uppercase = original.toUpperCase();
+      // You must return a Promise when performing asynchronous tasks inside a Functions such as
+      // writing to the Firebase Realtime Database.
+      // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
+      return snapshot.ref.parent.child('uppercase').set(uppercase);
+    });
  
  /**
   * Get a valid access token.
@@ -21,7 +50,7 @@
  // [START retrieve_access_token]
  function getAccessToken() {
    return new Promise(function(resolve, reject) {
-     const key = require('C:/Users/damaro/firebase/notification-7e2dd-firebase-adminsdk-ks8wd-0a25fd5ee7.json');
+     const key = require('C:/Users/damaro/firebase/notification-7e2dd-firebase-adminsdk-ks8wd-19bcdb5cdf.json');
      const jwtClient = new google.auth.JWT(
        key.client_email,
        null,
@@ -138,3 +167,5 @@
        + 'node index.js common-message\n'
        + 'node index.js override-message');
  }
+
+ 
