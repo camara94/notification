@@ -8,7 +8,12 @@ import 'package:notification/conf_notification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
+  _firebaseMessaging.getToken().then((token) {
+    print('LABY DAMARO CAMARA');
+    print(token);
+  });
   //Notification
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
@@ -52,25 +57,24 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification!.android;
+      try {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification!.android;
 
-      if (notification != null && android != null) {
-        flNotPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-                android: AndroidNotificationDetails(chanel.id, chanel.name,
-                    channelDescription: chanel.description,
-                    importance: Importance.high,
-                    color: Colors.blue,
-                    playSound: true,
-                    icon: '@mipmap/ic_launcher')));
-      }
-
-      print('---------------------+++++++++++++++++++++++++++');
-      print(chanel.groupId);
+        if (notification != null && android != null) {
+          flNotPlugin.show(
+              notification.hashCode,
+              notification.title,
+              notification.body,
+              NotificationDetails(
+                  android: AndroidNotificationDetails(chanel.id, chanel.name,
+                      channelDescription: chanel.description,
+                      importance: Importance.high,
+                      color: Colors.blue,
+                      playSound: true,
+                      icon: '@mipmap/ic_launcher')));
+        }
+      } on Exception catch (e) {}
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
