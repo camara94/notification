@@ -90,6 +90,7 @@ exports.makeUppercase = functions.database.ref('/messages/{pushId}/original')
      const request = https.request(options, function(resp) {
        resp.setEncoding('utf8');
        resp.on('data', function(data) {
+         console.log(options);
          console.log('Message sent to Firebase for delivery, response:');
          console.log(data);
        });
